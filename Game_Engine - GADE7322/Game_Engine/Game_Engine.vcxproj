@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
@@ -141,6 +142,7 @@
   <ItemGroup>
     <ClInclude Include="basicCubeMesh.h" />
     <ClInclude Include="basicMesh.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>

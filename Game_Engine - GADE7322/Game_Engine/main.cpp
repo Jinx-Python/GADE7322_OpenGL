@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <iostream>
 #include "shader.h"
+#include "Camera.h"
 #include <vector>
 #include "basicMesh.h"
 #include <filesystem>
@@ -14,6 +15,7 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
+Camera camera;
 
 int main()
 {
@@ -24,6 +26,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
+    camera.init(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     GLFWwindow* window = glfwCreateWindow(800, 600, "MyGameEngine", NULL, NULL);
     if (window == NULL)
@@ -147,64 +150,33 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        //inputs
+        //handle user inputs
         processInput(window);
 
-        //processing
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //RGB values to change colour
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//******* changes
+        //clear the screen
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        //bind the texture
         glBindTexture(GL_TEXTURE_2D, texture1);
 
-        //define vector  and initialize it to an identity matrix
-        //glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-        //glm::mat4 trans = glm::mat4(1.0);
-
-        //create transformation matrix 
-        //trans = glm::translate(trans, glm::vec3(-0.5f, -0.5f, 0.0f));
-        //trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-
-        //vec = trans * vec;
-
-        //std::cout << vec.x << vec.y << vec.z << std::endl;
-
-        //pass the  transformation matrix to the shader
-        //unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
-
-        //get matrix location  and set matrix
-        //glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
-        //myShader.setMat4("transform", trans);
-       // myTriangle.Draw(myShader);
-
-
-        //=============================================
-        //cube 
+        //cube model matrix
         glm::mat4 model = glm::mat4(1.0f);
-        //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-        
-        glm::mat4 view = glm::mat4(1.0f);
-        // note that we're translating the scene in the reverse direction of where we want to move
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+        //get the view matrix from the Camera class
+        glm::mat4 view = camera.getViewMatrix();
 
-        unsigned int viewLoc = glGetUniformLocation(myShader.ID, "view");
-
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-
-        myShader.setMat4("projection", projection);
+        //pass matrices to the shader
+        myShader.use();  
+        myShader.setMat4("view", view);
+        myShader.setMat4("projection", camera.projection); 
         myShader.setMat4("model", model);
+
+        //render the cube
         myCube.Draw(myShader);
 
-        
-
-        //math
-
-        //frame buffers
-
+        //swap buffers and poll events
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -224,6 +196,11 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+        camera.switchToCameraPosition(0);  
+    }
+    else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+        camera.switchToCameraPosition(1);  
+    }
     //all input managing things
 }
