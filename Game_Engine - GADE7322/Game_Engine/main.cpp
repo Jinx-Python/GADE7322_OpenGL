@@ -200,8 +200,10 @@ int main()
         myShader.setMat4("projection", projection);
         myShader.setMat4("model", model);
         myCube.Draw(myShader);
-
         
+        //Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+        //myShader.setMat4("view", linkToCameraView);
 
         //math
 
@@ -224,6 +226,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow* window)
 {
+    //Camera.processKeyboardInput;
+    
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
