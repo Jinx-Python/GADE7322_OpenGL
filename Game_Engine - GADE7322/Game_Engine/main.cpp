@@ -1,3 +1,4 @@
+#include <windows.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <glad/glad.h>
@@ -7,6 +8,8 @@
 #define _LIB
 #define FREEGLUT_LIB_PRAGMAS 0
 #include <GL/glut.h>
+#include <cstdlib>
+#include <cmath>
 #include <iostream>
 #include "shader.h"
 #include <vector>
@@ -19,6 +22,8 @@ using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
+GLuint _displayListId_blackArea; //The OpenGL id of the display list
+GLuint _displayListId_whiteArea; //The OpenGL id of the display list
 
 int main()
 {
@@ -188,33 +193,9 @@ int main()
 
         glBindTexture(GL_TEXTURE_2D, texture1);
 
-        //define vector  and initialize it to an identity matrix
-        //glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-        //glm::mat4 trans = glm::mat4(1.0);
-
-        //create transformation matrix 
-        //trans = glm::translate(trans, glm::vec3(-0.5f, -0.5f, 0.0f));
-        //trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-
-        //vec = trans * vec;
-
-        //std::cout << vec.x << vec.y << vec.z << std::endl;
-
-        //pass the  transformation matrix to the shader
-        //unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
-
-        //get matrix location  and set matrix
-        //glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
-        //myShader.setMat4("transform", trans);
-       // myTriangle.Draw(myShader);
-
-
         //=============================================
         //cube 
         glm::mat4 model = glm::mat4(1.0f);
-        //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
         glm::mat4 view = glm::mat4(1.0f);
         // note that we're translating the scene in the reverse direction of where we want to move
@@ -274,3 +255,4 @@ void processInput(GLFWwindow* window)
 
     //all input managing things
 }
+
