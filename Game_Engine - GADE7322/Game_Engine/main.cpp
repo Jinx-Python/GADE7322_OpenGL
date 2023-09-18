@@ -3,6 +3,7 @@
 #include <glad/glad.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+
 #include <iostream>
 #include "shader.h"
 #include <vector>
@@ -89,7 +90,6 @@ int main()
 
     //after setup 
     //define model properties
-
 
     //convert vertices into basic vertx class
     //std::vector<basicVertex> vertices = {
@@ -199,8 +199,6 @@ int main()
         myShader.setMat4("projection", projection);
         myShader.setMat4("model", model);
         myCube.Draw(myShader);
-
-
 
         //math
 
