@@ -3,7 +3,10 @@
 #include <glad/glad.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-
+#define FREEGLUT_STATIC
+#define _LIB
+#define FREEGLUT_LIB_PRAGMAS 0
+#include <GL/glut.h>
 #include <iostream>
 #include "shader.h"
 #include <vector>
@@ -11,7 +14,7 @@
 #include <filesystem>
 #include "basicCubeMesh.h"
 
-//using namespace std;
+using namespace std;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -169,6 +172,9 @@ int main()
     stbi_image_free(data);
 #pragma endregion
 
+    const int numStrips = (height - 1) / rez;
+    const int numTrisPerStrip = (width / rez) * 2 - 2;
+
     while (!glfwWindowShouldClose(window))
     {
         //inputs
@@ -178,7 +184,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //RGB values to change colour
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//******* changes
 
-        heightMapShader.use();
+        heightMapShader.use();         
 
         glBindTexture(GL_TEXTURE_2D, texture1);
 
@@ -208,7 +214,7 @@ int main()
         //cube 
         glm::mat4 model = glm::mat4(1.0f);
         //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 
         glm::mat4 view = glm::mat4(1.0f);
         // note that we're translating the scene in the reverse direction of where we want to move
@@ -217,13 +223,30 @@ int main()
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-        unsigned int viewLoc = glGetUniformLocation(myShader.ID, "view");
+        unsigned int viewLoc = glGetUniformLocation(heightMapShader.ID, "view");
 
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
 
         myShader.setMat4("projection", projection);
         myShader.setMat4("model", model);
-        //myCube.Draw(myShader);
+
+        // world transformation
+        heightMapShader.setMat4("model", model);
+
+        heightMapShader.setMat4("projection", projection);
+        heightMapShader.setMat4("view", view);
+
+        //draw terrain
+        glBindVertexArray(terrainVAO);
+        for (unsigned strip = 0; strip < numStrips; strip++)
+        {
+            glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
+                numTrisPerStrip + 2,   // number of indices to render
+                GL_UNSIGNED_INT,     // index data type
+                (void*)(sizeof(unsigned) * (numTrisPerStrip + 2) * strip)); // offset to starting index
+        }
+
+        glBindVertexArray(0);
 
         //math
 
