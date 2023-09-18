@@ -33,6 +33,7 @@ int main()
     // vertex generation
     std::vector<float> vertices;
     float yScale = 64.0f / 256.0f, yShift = 16.0f;  // apply a scale+shift to the height data
+    int rez = 1;
     for (unsigned int i = 0; i < mapHeight; i++)
     {
         for (unsigned int j = 0; j < mapWidth; j++)
@@ -43,65 +44,32 @@ int main()
             unsigned char y = texel[0];
 
             // vertex
-            vertices.push_back(-mapHeight / 2.0f + i);        // v.x
+            vertices.push_back(-mapHeight / 2.0f + mapHeight * i / (float)mapHeight );        // v.x
             vertices.push_back((int)y * yScale - yShift); // v.y
-            vertices.push_back(-mapWidth / 2.0f + j);        // v.z
+            vertices.push_back(-mapWidth / 2.0f + mapWidth * j / (float)mapWidth );        // v.z
         }
     }
 
     stbi_image_free(mapData);
 
     // index generation
-    std::vector<unsigned int> indices;
-    for (unsigned int i = 0; i < mapHeight - 1; i++)       // for each row a.k.a. each strip
+    std::vector<unsigned> indices;
+    for (unsigned i = 0; i < mapHeight - 1; i+= rez)       // for each row a.k.a. each strip
     {
-        for (unsigned int j = 0; j < mapWidth; j++)      // for each column
+        for (unsigned j = 0; j < mapWidth; j+= rez)      // for each column
         {
             for (unsigned int k = 0; k < 2; k++)      // for each side of the strip
             {
-                indices.push_back(j + mapWidth * (i + k));
+                indices.push_back(j + mapWidth * (i + k * rez));
             }
         }
     }
+    std::cout << "Loaded " << indices.size() << " indices" << std::endl;
 
     const unsigned int NUM_STRIPS = mapHeight - 1;
     const unsigned int NUM_VERTS_PER_STRIP = mapWidth * 2;
-
-    // register VAO
-    GLuint terrainVAO, terrainVBO, terrainEBO;
-    glGenVertexArrays(1, &terrainVAO);
-    glBindVertexArray(terrainVAO);
-
-    glGenBuffers(1, &terrainVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, terrainVBO);
-    glBufferData(GL_ARRAY_BUFFER,
-        vertices.size() * sizeof(float),       // size of vertices buffer
-        &vertices[0],                          // pointer to first element
-        GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glGenBuffers(1, &terrainEBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, terrainEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-        indices.size() * sizeof(unsigned int), // size of indices buffer
-        &indices[0],                           // pointer to first element
-        GL_STATIC_DRAW);
-
-    // draw mesh
-    glBindVertexArray(terrainVAO);
-    // render the mesh triangle strip by triangle strip - each row at a time
-    for (unsigned int strip = 0; strip < NUM_STRIPS; ++strip)
-    {
-        glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
-            NUM_VERTS_PER_STRIP, // number of indices to render
-            GL_UNSIGNED_INT,     // index data type
-            (void*)(sizeof(unsigned int)
-                * NUM_VERTS_PER_STRIP
-                * strip)); // offset to starting index
-    }
+    std::cout << "Created lattice of " << NUM_STRIPS << " strips with " << NUM_VERTS_PER_STRIP << " triangles each" << std::endl;
+    std::cout << "Created " << NUM_STRIPS * NUM_VERTS_PER_STRIP << " triangles total" << std::endl;    
 
     GLFWwindow* window = glfwCreateWindow(800, 600, "MyGameEngine", NULL, NULL);
     if (window == NULL)
@@ -125,6 +93,42 @@ int main()
     glViewport(0, 0, 800, 600);
 
 #pragma endregion
+    // register VAO
+    unsigned int terrainVAO, terrainVBO, terrainEBO;
+    glGenVertexArrays(1, &terrainVAO);
+    glBindVertexArray(terrainVAO);
+
+
+    glGenBuffers(1, &terrainVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, terrainVBO);
+    glBufferData(GL_ARRAY_BUFFER,
+        vertices.size() * sizeof(float),       // size of vertices buffer
+        &vertices[0],                          // pointer to first element
+        GL_STATIC_DRAW);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glGenBuffers(1, &terrainEBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, terrainEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+        indices.size() * sizeof(unsigned int), // size of indices buffer
+        &indices[0],                           // pointer to first element
+        GL_STATIC_DRAW);
+
+    // draw mesh
+    glBindVertexArray(terrainVAO);
+    // render the mesh triangle strip by triangle strip - each row at a time
+    for (unsigned int strip = 0; strip < NUM_STRIPS; ++strip)
+    {
+        glDrawElements(GL_TRIANGLE_STRIP,   // primitive type
+            NUM_VERTS_PER_STRIP, // number of indices to render
+            GL_UNSIGNED_INT,     // index data type
+            (void*)(sizeof(unsigned int)
+                * NUM_VERTS_PER_STRIP
+                * strip)); // offset to starting index
+    }
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
