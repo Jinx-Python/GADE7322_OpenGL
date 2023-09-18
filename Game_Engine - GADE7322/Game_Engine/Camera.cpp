@@ -1,4 +1,5 @@
 #include "camera.h"
+#include <iostream>
 
 Camera::Camera() {
     cameraPositions[0] = glm::vec3(0.0f, 0.0f, 3.0f);   //position 1
@@ -9,6 +10,7 @@ Camera::Camera() {
 }
 
 void Camera::processKeyboardInput(int key, int action) {
+    std::cout << "keyboard pressed \n";
     if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS) {
         currentCameraPositionIndex = (currentCameraPositionIndex + 1) % 3;
     }
