@@ -16,6 +16,7 @@
 #include "basicMesh.h"
 #include <filesystem>
 #include "basicCubeMesh.h"
+#include "camera.h"
 
 using namespace std;
 
@@ -184,6 +185,7 @@ int main()
     {
         //inputs
         processInput(window);
+        
 
         //processing
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //RGB values to change colour

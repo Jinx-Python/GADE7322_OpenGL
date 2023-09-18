@@ -1,0 +1,9 @@
+Reference List
+
+du Preez, N. 2023. HightMap. [Personal drawing]. Krugersdorp: Unpublished
+
+Hussain, F. 2018. Learn OpenGL : Beginner's Guide to 3D Rendering and Game Development with OpenGL and C++. Birmingham: Packt Publishing.
+
+Learn OpenGL. 2014. Welcome to OpenGL, [s.a.]. [Online]. Available at: https://learnopengl.com
+[Accessed 1 September 2023]
+
