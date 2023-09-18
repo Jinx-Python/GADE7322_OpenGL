@@ -18,6 +18,8 @@
 #include "basicCubeMesh.h"
 #include "camera.h"
 
+Camera camera = Camera();
+
 using namespace std;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -199,7 +201,7 @@ int main()
         //cube 
         glm::mat4 model = glm::mat4(1.0f);
 
-        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 view = camera.getViewMatrix();
         // note that we're translating the scene in the reverse direction of where we want to move
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
