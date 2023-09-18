@@ -1,0 +1,2 @@
+GitHub - https://github.com/Jinx-Python/GADE7322_OpenGL
+Trello - https://trello.com/invite/b/31lA59Gb/ATTI605684dd478001573f49f621da47d376C2CAA264/game-engine
