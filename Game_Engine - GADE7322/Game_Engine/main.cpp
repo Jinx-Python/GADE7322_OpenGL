@@ -17,6 +17,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 void createPawn();
 void renderPawn();
+void createRook();
+void renderRook();
 
 GLuint shaderProgram;
 GLuint vao, vbo;
@@ -34,6 +36,33 @@ GLfloat pawnVertices[] = {
     0.1f, 0.0f, -0.1f,
     -0.1f, 0.0f, -0.1f,
     0.0f, 0.25f, 0.0f
+};
+
+// Rook vertices
+GLfloat rookVertices[] = {
+    // Top part
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.2f, 0.0f,
+    0.15f, 0.2f, 0.15f,
+    -0.15f, 0.2f, 0.15f,
+    0.15f, 0.2f, -0.15f,
+    -0.15f, 0.2f, -0.15f,
+
+    // Middle part
+    0.0f, 0.2f, 0.0f,
+    0.0f, 0.5f, 0.0f,
+    0.2f, 0.5f, 0.2f,
+    -0.2f, 0.5f, 0.2f,
+    0.2f, 0.5f, -0.2f,
+    -0.2f, 0.5f, -0.2f,
+
+    // Base
+    0.0f, 0.5f, 0.0f,
+    0.0f, 0.6f, 0.0f,
+    0.25f, 0.6f, 0.25f,
+    -0.25f, 0.6f, 0.25f,
+    0.25f, 0.6f, -0.25f,
+    -0.25f, 0.6f, -0.25f
 };
 
 int main()
@@ -279,5 +308,36 @@ void renderPawn() {
 
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
+    glBindVertexArray(0);
+}
+
+void createRook() {
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(rookVertices), rookVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void renderRook() {
+    glUseProgram(shaderProgram);
+
+    GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
+    GLuint viewLoc = glGetUniformLocation(shaderProgram, "view");
+    GLuint projLoc = glGetUniformLocation(shaderProgram, "projection");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 18);
     glBindVertexArray(0);
 }
