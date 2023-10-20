@@ -21,6 +21,8 @@ void createRook();
 void renderRook();
 void createKnight();
 void renderKnight();
+void createQueen();
+void renderQueen();
 
 GLuint shaderProgram;
 GLuint vao, vbo;
@@ -76,6 +78,19 @@ GLfloat knightVertices[] = {
     0.15f, 0.0f, -0.15f,
     -0.15f, 0.0f, -0.15f,
     0.0f, 0.4f, 0.0f
+};
+
+GLfloat queenVertices[] = {
+    // Position
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,
+    0.1f, 0.0f, 0.1f,
+    -0.1f, 0.0f, 0.1f,
+    0.1f, 0.0f, -0.1f,
+    -0.1f, 0.0f, -0.1f,
+    0.0f, 0.25f, 0.0f,
+    0.2f, 0.0f, 0.0f,
+    -0.2f, 0.0f, 0.0f
 };
 
 int main()
@@ -383,5 +398,32 @@ void renderKnight() {
 
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
+    glBindVertexArray(0);
+}
+
+void createQueen() {
+    // Reuse the vao from the pawn
+    glBindVertexArray(vao);
+
+    // Replace the pawn vertices with queenVertices
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(queenVertices), queenVertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void renderQueen() {
+    glUseProgram(shaderProgram);
+
+    GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
+
+    // Position the queen
+    model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
     glBindVertexArray(0);
 }
