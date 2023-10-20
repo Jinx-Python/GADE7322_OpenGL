@@ -19,6 +19,8 @@ void createPawn();
 void renderPawn();
 void createRook();
 void renderRook();
+void createKnight();
+void renderKnight();
 
 GLuint shaderProgram;
 GLuint vao, vbo;
@@ -63,6 +65,17 @@ GLfloat rookVertices[] = {
     -0.25f, 0.6f, 0.25f,
     0.25f, 0.6f, -0.25f,
     -0.25f, 0.6f, -0.25f
+};
+
+GLfloat knightVertices[] = {
+    // Position
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,
+    0.15f, 0.0f, 0.15f,
+    -0.15f, 0.0f, 0.15f,
+    0.15f, 0.0f, -0.15f,
+    -0.15f, 0.0f, -0.15f,
+    0.0f, 0.4f, 0.0f
 };
 
 int main()
@@ -339,5 +352,36 @@ void renderRook() {
 
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 18);
+    glBindVertexArray(0);
+}
+
+void createKnight() {
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(knightVertices), knightVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void renderKnight() {
+    glUseProgram(shaderProgram);
+
+    GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
+    GLuint viewLoc = glGetUniformLocation(shaderProgram, "view");
+    GLuint projLoc = glGetUniformLocation(shaderProgram, "projection");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
     glBindVertexArray(0);
 }
