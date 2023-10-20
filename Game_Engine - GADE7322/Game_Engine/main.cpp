@@ -23,6 +23,8 @@ void createKnight();
 void renderKnight();
 void createQueen();
 void renderQueen();
+void createKing();
+void renderKing();
 
 GLuint shaderProgram;
 GLuint vao, vbo;
@@ -30,9 +32,9 @@ glm::mat4 model = glm::mat4(1.0f);
 glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
-// Pawn vertices
+//Pawn vertices
 GLfloat pawnVertices[] = {
-    // Position
+    //Position
     0.0f, 0.0f, 0.0f,
     0.0f, 0.0f, 1.0f,
     0.1f, 0.0f, 0.1f,
@@ -42,9 +44,9 @@ GLfloat pawnVertices[] = {
     0.0f, 0.25f, 0.0f
 };
 
-// Rook vertices
+//Rook vertices
 GLfloat rookVertices[] = {
-    // Top part
+    //Top part
     0.0f, 0.0f, 0.0f,
     0.0f, 0.2f, 0.0f,
     0.15f, 0.2f, 0.15f,
@@ -52,7 +54,7 @@ GLfloat rookVertices[] = {
     0.15f, 0.2f, -0.15f,
     -0.15f, 0.2f, -0.15f,
 
-    // Middle part
+    //Middle part
     0.0f, 0.2f, 0.0f,
     0.0f, 0.5f, 0.0f,
     0.2f, 0.5f, 0.2f,
@@ -60,7 +62,7 @@ GLfloat rookVertices[] = {
     0.2f, 0.5f, -0.2f,
     -0.2f, 0.5f, -0.2f,
 
-    // Base
+    //Base
     0.0f, 0.5f, 0.0f,
     0.0f, 0.6f, 0.0f,
     0.25f, 0.6f, 0.25f,
@@ -69,8 +71,9 @@ GLfloat rookVertices[] = {
     -0.25f, 0.6f, -0.25f
 };
 
+//King Vertices
 GLfloat knightVertices[] = {
-    // Position
+    //Position
     0.0f, 0.0f, 0.0f,
     0.0f, 0.0f, 1.0f,
     0.15f, 0.0f, 0.15f,
@@ -80,8 +83,9 @@ GLfloat knightVertices[] = {
     0.0f, 0.4f, 0.0f
 };
 
+//Queen Vertices
 GLfloat queenVertices[] = {
-    // Position
+    //Position
     0.0f, 0.0f, 0.0f,
     0.0f, 0.0f, 1.0f,
     0.1f, 0.0f, 0.1f,
@@ -91,6 +95,18 @@ GLfloat queenVertices[] = {
     0.0f, 0.25f, 0.0f,
     0.2f, 0.0f, 0.0f,
     -0.2f, 0.0f, 0.0f
+};
+
+//King vertices
+GLfloat kingVertices[] = {
+    //Position
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.1f, 0.0f,
+    0.05f, 0.15f, 0.05f,
+    -0.05f, 0.15f, 0.05f,
+    0.05f, 0.15f, -0.05f,
+    -0.05f, 0.15f, -0.05f,
+    0.0f, 0.25f, 0.0f
 };
 
 int main()
@@ -222,7 +238,11 @@ int main()
     };
     basicCubeMesh myCube(vertices);
 
-
+    createPawn();
+    createRook();
+    createKnight();
+    createQueen();
+    createKing();
 
     while (!glfwWindowShouldClose(window))
     {
@@ -279,7 +299,11 @@ int main()
         myShader.setMat4("model", model);
         myCube.Draw(myShader);
 
-        
+        renderPawn();
+        renderRook();
+        renderKnight();
+        renderQueen();
+        renderKing();
 
         //math
 
@@ -402,10 +426,10 @@ void renderKnight() {
 }
 
 void createQueen() {
-    // Reuse the vao from the pawn
+    //Reuse the vao from the pawn
     glBindVertexArray(vao);
 
-    // Replace the pawn vertices with queenVertices
+    //Replace the pawn vertices with queenVertices
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(queenVertices), queenVertices, GL_STATIC_DRAW);
 
@@ -418,12 +442,43 @@ void renderQueen() {
 
     GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
 
-    // Position the queen
+    //Position the queen
     model = glm::translate(model, glm::vec3(1.0f, 0.0f, 0.0f));
 
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
+    glBindVertexArray(0);
+}
+
+void createKing() {
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(kingVertices), kingVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void renderKing() {
+    glUseProgram(shaderProgram);
+
+    GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
+    GLuint viewLoc = glGetUniformLocation(shaderProgram, "view");
+    GLuint projLoc = glGetUniformLocation(shaderProgram, "projection");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
     glBindVertexArray(0);
 }
