@@ -1,7 +1,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class Animation{
+class Animation {
 public:
     //constructor - not really needed but c++ likes it so im leaving it here
     Animation() : time(0.0f) {}
@@ -65,4 +65,3 @@ public:
 private:
     float time;
 };
-
