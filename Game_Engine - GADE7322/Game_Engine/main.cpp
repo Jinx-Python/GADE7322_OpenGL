@@ -103,6 +103,7 @@ GLfloat bishopVertices[] = {
     0.0f, 0.25f, 0.0f
 };
 
+//Queen vertices
 GLfloat queenVertices[] = {
     // Position
     0.0f, 0.0f, 0.0f,
