@@ -12,102 +12,16 @@
 
 //using namespace std;
 
+Camera camera = Camera();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-void createPawn();
-void renderPawn();
-void createRook();
-void renderRook();
-void createKnight();
-void renderKnight();
-void createQueen();
-void renderQueen();
-void createKing();
-void renderKing();
 
-GLuint shaderProgram;
-GLuint vao, vbo;
-glm::mat4 model = glm::mat4(1.0f);
-glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    camera.processKeyboardInput(key, action);
+}
 
-//Pawn vertices
-GLfloat pawnVertices[] = {
-    //Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f,
-    0.1f, 0.0f, 0.1f,
-    -0.1f, 0.0f, 0.1f,
-    0.1f, 0.0f, -0.1f,
-    -0.1f, 0.0f, -0.1f,
-    0.0f, 0.25f, 0.0f
-};
-
-//Rook vertices
-GLfloat rookVertices[] = {
-    //Top part
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.2f, 0.0f,
-    0.15f, 0.2f, 0.15f,
-    -0.15f, 0.2f, 0.15f,
-    0.15f, 0.2f, -0.15f,
-    -0.15f, 0.2f, -0.15f,
-
-    //Middle part
-    0.0f, 0.2f, 0.0f,
-    0.0f, 0.5f, 0.0f,
-    0.2f, 0.5f, 0.2f,
-    -0.2f, 0.5f, 0.2f,
-    0.2f, 0.5f, -0.2f,
-    -0.2f, 0.5f, -0.2f,
-
-    //Base
-    0.0f, 0.5f, 0.0f,
-    0.0f, 0.6f, 0.0f,
-    0.25f, 0.6f, 0.25f,
-    -0.25f, 0.6f, 0.25f,
-    0.25f, 0.6f, -0.25f,
-    -0.25f, 0.6f, -0.25f
-};
-
-//King Vertices
-GLfloat knightVertices[] = {
-    //Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f,
-    0.15f, 0.0f, 0.15f,
-    -0.15f, 0.0f, 0.15f,
-    0.15f, 0.0f, -0.15f,
-    -0.15f, 0.0f, -0.15f,
-    0.0f, 0.4f, 0.0f
-};
-
-//Queen Vertices
-GLfloat queenVertices[] = {
-    //Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f,
-    0.1f, 0.0f, 0.1f,
-    -0.1f, 0.0f, 0.1f,
-    0.1f, 0.0f, -0.1f,
-    -0.1f, 0.0f, -0.1f,
-    0.0f, 0.25f, 0.0f,
-    0.2f, 0.0f, 0.0f,
-    -0.2f, 0.0f, 0.0f
-};
-
-//King vertices
-GLfloat kingVertices[] = {
-    //Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.1f, 0.0f,
-    0.05f, 0.15f, 0.05f,
-    -0.05f, 0.15f, 0.05f,
-    0.05f, 0.15f, -0.05f,
-    -0.05f, 0.15f, -0.05f,
-    0.0f, 0.25f, 0.0f
-};
 
 int main()
 {
@@ -118,7 +32,6 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    
 
     GLFWwindow* window = glfwCreateWindow(800, 600, "MyGameEngine", NULL, NULL);
     if (window == NULL)
@@ -238,11 +151,7 @@ int main()
     };
     basicCubeMesh myCube(vertices);
 
-    createPawn();
-    createRook();
-    createKnight();
-    createQueen();
-    createKing();
+
 
     while (!glfwWindowShouldClose(window))
     {
