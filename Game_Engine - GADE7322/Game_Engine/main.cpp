@@ -12,8 +12,26 @@
 
 //using namespace std;
 
-Camera camera = Camera();
+GLuint shaderProgram;
+GLuint vao, vbo;
+glm::mat4 model = glm::mat4(1.0f);
+glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
+void createPawn();
+void renderPawn();
+void createRook();
+void renderRook();
+void createKnight();
+void renderKnight();
+void createBishop();
+void renderBishop();
+void createKing();
+void renderKing();
+void createQueen();
+void renderQueen();
+
+Camera camera = Camera();
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -22,6 +40,93 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     camera.processKeyboardInput(key, action);
 }
 
+// Pawn vertices
+GLfloat pawnVertices[] = {
+    // Position
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,
+    0.1f, 0.0f, 0.1f,
+    -0.1f, 0.0f, 0.1f,
+    0.1f, 0.0f, -0.1f,
+    -0.1f, 0.0f, -0.1f,
+    0.0f, 0.25f, 0.0f
+};
+
+// Rook vertices
+GLfloat rookVertices[] = {
+    // Top part
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.2f, 0.0f,
+    0.15f, 0.2f, 0.15f,
+    -0.15f, 0.2f, 0.15f,
+    0.15f, 0.2f, -0.15f,
+    -0.15f, 0.2f, -0.15f,
+
+    // Middle part
+    0.0f, 0.2f, 0.0f,
+    0.0f, 0.5f, 0.0f,
+    0.2f, 0.5f, 0.2f,
+    -0.2f, 0.5f, 0.2f,
+    0.2f, 0.5f, -0.2f,
+    -0.2f, 0.5f, -0.2f,
+
+    // Base
+    0.0f, 0.5f, 0.0f,
+    0.0f, 0.6f, 0.0f,
+    0.25f, 0.6f, 0.25f,
+    -0.25f, 0.6f, 0.25f,
+    0.25f, 0.6f, -0.25f,
+    -0.25f, 0.6f, -0.25f
+};
+
+// Knight vertices
+GLfloat knightVertices[] = {
+    // Position
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,
+    0.15f, 0.0f, 0.15f,
+    -0.15f, 0.0f, 0.15f,
+    0.15f, 0.0f, -0.15f,
+    -0.15f, 0.0f, -0.15f,
+    0.0f, 0.4f, 0.0f
+};
+
+// Bishop vertices
+GLfloat bishopVertices[] = {
+    // Position
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,
+    0.15f, 0.0f, 0.15f,
+    -0.15f, 0.0f, 0.15f,
+    0.15f, 0.0f, -0.15f,
+    -0.15f, 0.0f, -0.15f,
+    0.0f, 0.25f, 0.0f
+};
+
+GLfloat queenVertices[] = {
+    // Position
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.0f, 1.0f,
+    0.1f, 0.0f, 0.1f,
+    -0.1f, 0.0f, 0.1f,
+    0.1f, 0.0f, -0.1f,
+    -0.1f, 0.0f, -0.1f,
+    0.0f, 0.25f, 0.0f,
+    0.2f, 0.0f, 0.0f,
+    -0.2f, 0.0f, 0.0f
+};
+
+// King vertices
+GLfloat kingVertices[] = {
+    // Position
+    0.0f, 0.0f, 0.0f,
+    0.0f, 0.1f, 0.0f,
+    0.05f, 0.15f, 0.05f,
+    -0.05f, 0.15f, 0.05f,
+    0.05f, 0.15f, -0.05f,
+    -0.05f, 0.15f, -0.05f,
+    0.0f, 0.25f, 0.0f
+};
 
 int main()
 {
@@ -151,7 +256,12 @@ int main()
     };
     basicCubeMesh myCube(vertices);
 
-
+    createPawn();
+    createBishop();
+    createKnight();
+    createRook();
+    createQueen();
+    createKing();
 
     while (!glfwWindowShouldClose(window))
     {
@@ -211,6 +321,7 @@ int main()
         renderPawn();
         renderRook();
         renderKnight();
+        renderBishop();
         renderQueen();
         renderKing();
 
@@ -319,6 +430,37 @@ void createKnight() {
 }
 
 void renderKnight() {
+    glUseProgram(shaderProgram);
+
+    GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
+    GLuint viewLoc = glGetUniformLocation(shaderProgram, "view");
+    GLuint projLoc = glGetUniformLocation(shaderProgram, "projection");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+    glBindVertexArray(vao);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
+    glBindVertexArray(0);
+}
+
+void createBishop() {
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(bishopVertices), bishopVertices, GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+}
+
+void renderBishop() {
     glUseProgram(shaderProgram);
 
     GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
