@@ -1,8 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-#include <glad/glad.h>
-#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 #include <iostream>
 #include "shader.h"
 #include <vector>
@@ -184,8 +183,8 @@ int main()
 
     //after setup 
     //define model properties
-
-
+     
+    
     //convert vertices into basic vertx class
     //std::vector<basicVertex> vertices = {
     //    {glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f,0.0f)},
@@ -237,52 +236,7 @@ int main()
         {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
         {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
     };
-
-    std::vector<basicCubeVertex> verticesSequel = {
-       {glm::vec3(-0.5f, -0.5f, -1.5f), glm::vec2(0.0f, 0.0f)},
-       {glm::vec3(0.5f, -0.5f, -1.5f), glm::vec2(1.0f, 0.0f)},
-       {glm::vec3(0.5f,  0.5f, -1.5f), glm::vec2(1.0f, 1.0f)},
-       {glm::vec3(0.5f,  0.5f, -1.5f), glm::vec2(1.0f, 1.0f)},
-       {glm::vec3(-0.5f,  0.5f, -1.5f), glm::vec2(0.0f, 1.0f)},
-       {glm::vec3(-0.5f, -0.5f, -1.5f), glm::vec2(0.0f, 0.0f)},
-
-       {glm::vec3(-0.5f, -0.5f,  -0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f,  -0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f,  -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f,  -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f,  0.5f,  -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f,  -0.5f), glm::vec2(0.0f, 0.0f)},
-
-       {glm::vec3(-0.5f,  0.5f,  -1.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f,  -1.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f,  -1.5f), glm::vec2(1.0f, 0.0f)},
-
-       {glm::vec3(0.5f,  0.5f,  -1.5f), glm::vec2(1.0f, 0.0f)},
-       {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-       {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-       {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-       {glm::vec3(0.5f, -0.5f,  -1.5f), glm::vec2(0.0f, 0.0f)},
-       {glm::vec3(0.5f,  0.5f,  -1.5f), glm::vec2(1.0f, 0.0f)},
-
-       {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-
-       {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-       {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-       {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-       {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-       {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-       {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-    };
     basicCubeMesh myCube(vertices);
-    basicCubeMesh myCubeSequel(verticesSequel);
 
     createPawn();
     createRook();
@@ -294,7 +248,7 @@ int main()
     {
         //inputs
         processInput(window);
-
+        
 
         //processing
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //RGB values to change colour
@@ -302,16 +256,37 @@ int main()
 
         glBindTexture(GL_TEXTURE_2D, texture1);
 
+        //define vector  and initialize it to an identity matrix
+        //glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+        //glm::mat4 trans = glm::mat4(1.0);
+
+        //create transformation matrix 
+        //trans = glm::translate(trans, glm::vec3(-0.5f, -0.5f, 0.0f));
+        //trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        //vec = trans * vec;
+
+        //std::cout << vec.x << vec.y << vec.z << std::endl;
+
+        //pass the  transformation matrix to the shader
+        //unsigned int transformLoc = glGetUniformLocation(myShader.ID, "transform");
+
+        //get matrix location  and set matrix
+        //glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
+        //myShader.setMat4("transform", trans);
+       // myTriangle.Draw(myShader);
+
+
         //=============================================
         //cube 
         glm::mat4 model = glm::mat4(1.0f);
         //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-        //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
-
+        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        
         glm::mat4 view = glm::mat4(1.0f);
         // note that we're translating the scene in the reverse direction of where we want to move
-        view = camera.getViewMatrix();
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -323,8 +298,6 @@ int main()
         myShader.setMat4("projection", projection);
         myShader.setMat4("model", model);
         myCube.Draw(myShader);
-        myCubeSequel.Draw(myShader);
-
 
         renderPawn();
         renderRook();
@@ -332,15 +305,12 @@ int main()
         renderQueen();
         renderKing();
 
-
         //math
 
         //frame buffers
 
         glfwSwapBuffers(window);
         glfwPollEvents();
-
-        glfwSetKeyCallback(window, key_callback);
     }
 
     glfwTerminate();
@@ -358,7 +328,6 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    
 
     //all input managing things
 }
