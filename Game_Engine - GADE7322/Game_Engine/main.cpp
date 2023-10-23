@@ -14,7 +14,8 @@
 #include "camera.h"
 
 //using namespace std;
-
+GLuint sphereVAO, cylinderVAO, cubeVAO, coneVAO;
+std::vector<glm::vec3> sphereVertices, cylinderVertices, cubeVertices, coneVetrices;
 GLuint shaderProgram;
 GLuint vao, vbo;
 glm::mat4 model = glm::mat4(1.0f);
@@ -42,95 +43,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
     camera.processKeyboardInput(key, action);
 }
-
-// Pawn vertices
-GLfloat pawnVertices[] = {
-    // Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f,
-    0.1f, 0.0f, 0.1f,
-    -0.1f, 0.0f, 0.1f,
-    0.1f, 0.0f, -0.1f,
-    -0.1f, 0.0f, -0.1f,
-    0.0f, 0.25f, 0.0f
-};
-
-// Rook vertices
-GLfloat rookVertices[] = {
-    // Top part
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.2f, 0.0f,
-    0.15f, 0.2f, 0.15f,
-    -0.15f, 0.2f, 0.15f,
-    0.15f, 0.2f, -0.15f,
-    -0.15f, 0.2f, -0.15f,
-
-    // Middle part
-    0.0f, 0.2f, 0.0f,
-    0.0f, 0.5f, 0.0f,
-    0.2f, 0.5f, 0.2f,
-    -0.2f, 0.5f, 0.2f,
-    0.2f, 0.5f, -0.2f,
-    -0.2f, 0.5f, -0.2f,
-
-    // Base
-    0.0f, 0.5f, 0.0f,
-    0.0f, 0.6f, 0.0f,
-    0.25f, 0.6f, 0.25f,
-    -0.25f, 0.6f, 0.25f,
-    0.25f, 0.6f, -0.25f,
-    -0.25f, 0.6f, -0.25f
-};
-
-// Knight vertices
-GLfloat knightVertices[] = {
-    // Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f,
-    0.15f, 0.0f, 0.15f,
-    -0.15f, 0.0f, 0.15f,
-    0.15f, 0.0f, -0.15f,
-    -0.15f, 0.0f, -0.15f,
-    0.0f, 0.4f, 0.0f
-};
-
-// Bishop vertices
-GLfloat bishopVertices[] = {
-    // Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f,
-    0.15f, 0.0f, 0.15f,
-    -0.15f, 0.0f, 0.15f,
-    0.15f, 0.0f, -0.15f,
-    -0.15f, 0.0f, -0.15f,
-    0.0f, 0.25f, 0.0f
-};
-
-//Queen vertices
-GLfloat queenVertices[] = {
-    // Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.0f, 1.0f,
-    0.1f, 0.0f, 0.1f,
-    -0.1f, 0.0f, 0.1f,
-    0.1f, 0.0f, -0.1f,
-    -0.1f, 0.0f, -0.1f,
-    0.0f, 0.25f, 0.0f,
-    0.2f, 0.0f, 0.0f,
-    -0.2f, 0.0f, 0.0f
-};
-
-// King vertices
-GLfloat kingVertices[] = {
-    // Position
-    0.0f, 0.0f, 0.0f,
-    0.0f, 0.1f, 0.0f,
-    0.05f, 0.15f, 0.05f,
-    -0.05f, 0.15f, 0.05f,
-    0.05f, 0.15f, -0.05f,
-    -0.05f, 0.15f, -0.05f,
-    0.0f, 0.25f, 0.0f
-};
 
 int main()
 {
@@ -358,45 +270,52 @@ void processInput(GLFWwindow* window)
 
 void drawCube(float size) {
     float halfSize = size / 2.0f;
-    glBegin(GL_QUADS);
 
-    // Front Face
-    glVertex3f(-halfSize, -halfSize, halfSize);
-    glVertex3f(halfSize, -halfSize, halfSize);
-    glVertex3f(halfSize, halfSize, halfSize);
-    glVertex3f(-halfSize, halfSize, halfSize);
+    // Define the vertices of the cube
+    GLfloat vertices[] = {
+        -halfSize, -halfSize, halfSize,
+        halfSize, -halfSize, halfSize,
+        halfSize, halfSize, halfSize,
+        -halfSize, halfSize, halfSize,
+        -halfSize, -halfSize, -halfSize,
+        halfSize, -halfSize, -halfSize,
+        halfSize, halfSize, -halfSize,
+        -halfSize, halfSize, -halfSize
+    };
 
-    // Back Face
-    glVertex3f(-halfSize, -halfSize, -halfSize);
-    glVertex3f(-halfSize, halfSize, -halfSize);
-    glVertex3f(halfSize, halfSize, -halfSize);
-    glVertex3f(halfSize, -halfSize, -halfSize);
+    // Define the indices of the cube
+    GLuint indices[] = {
+        0, 1, 2, 2, 3, 0, // Front face
+        1, 5, 6, 6, 2, 1, // Right face
+        7, 6, 5, 5, 4, 7, // Back face
+        4, 0, 3, 3, 7, 4, // Left face
+        4, 5, 1, 1, 0, 4, // Bottom face
+        3, 2, 6, 6, 7, 3  // Top face
+    };
 
-    // Left Face
-    glVertex3f(-halfSize, -halfSize, -halfSize);
-    glVertex3f(-halfSize, -halfSize, halfSize);
-    glVertex3f(-halfSize, halfSize, halfSize);
-    glVertex3f(-halfSize, halfSize, -halfSize);
+    // Generate and bind the VAO
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
 
-    // Right Face
-    glVertex3f(halfSize, -halfSize, -halfSize);
-    glVertex3f(halfSize, -halfSize, halfSize);
-    glVertex3f(halfSize, halfSize, halfSize);
-    glVertex3f(halfSize, halfSize, -halfSize);
+    // Generate and bind the VBO
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    // Top Face
-    glVertex3f(-halfSize, halfSize, -halfSize);
-    glVertex3f(-halfSize, halfSize, halfSize);
-    glVertex3f(halfSize, halfSize, halfSize);
-    glVertex3f(halfSize, halfSize, -halfSize);
+    // Generate and bind the EBO
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    // Bottom Face
-    glVertex3f(-halfSize, -halfSize, -halfSize);
-    glVertex3f(-halfSize, -halfSize, halfSize);
-    glVertex3f(halfSize, -halfSize, halfSize);
-    glVertex3f(halfSize, -halfSize, -halfSize);
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 
-    glEnd();
+    // Unbind the VAO
+    glBindVertexArray(0);
 }
 
 void drawSphere(float radius, int stacks, int slices) {
@@ -546,21 +465,18 @@ void drawCone(float radius, float height, int slices) {
 }
 
 void createPawn() {
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    // Draw the head (sphere)
+    drawSphere(1.0f, 10, 10);
+    sphereVAO = vao;
+    //sphereVertices = vertices;
 
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(pawnVertices), pawnVertices, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    // Draw the body (cylinder)
+    drawCylinder(1.0f, 2.0f, 10, 10);
+    cylinderVAO = vao;
+    //cylinderVertices = vertices;
 }
 
-void renderPawn() {
+/*void renderPawn() {
     glUseProgram(shaderProgram);
 
     GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
@@ -571,27 +487,26 @@ void renderPawn() {
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-    glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
+    // Draw the head (sphere)
+    glBindVertexArray(sphereVAO);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, sphereVertices.size());
     glBindVertexArray(0);
-}
+
+    // Draw the body (cylinder)
+    glBindVertexArray(cylinderVAO);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, cylinderVertices.size());
+    glBindVertexArray(0);
+}*/
 
 void createRook() {
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    // Draw the body (cylinder)
+    drawCylinder(1.0f, 2.0f, 10, 10);
 
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(rookVertices), rookVertices, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    // Draw the head (cube)
+    drawCube(1.0f);
 }
 
-void renderRook() {
+/*void renderRook() {
     glUseProgram(shaderProgram);
 
     GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
@@ -605,24 +520,17 @@ void renderRook() {
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 18);
     glBindVertexArray(0);
-}
+}*/
 
 void createKnight() {
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    // Draw the body (cylinder)
+    drawCylinder(1.0f, 2.0f, 10, 10);
 
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(knightVertices), knightVertices, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    // Draw the head (cube)
+    drawCube(1.0f);
 }
 
-void renderKnight() {
+/*void renderKnight() {
     glUseProgram(shaderProgram);
 
     GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
@@ -636,24 +544,17 @@ void renderKnight() {
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
     glBindVertexArray(0);
-}
+}*/
 
 void createBishop() {
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    // Draw the body (cylinder)
+    drawCylinder(1.0f, 2.0f, 10, 10);
 
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(bishopVertices), bishopVertices, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    // Draw the head (sphere)
+    drawSphere(1.0f, 10, 10);
 }
 
-void renderBishop() {
+/*void renderBishop() {
     glUseProgram(shaderProgram);
 
     GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
@@ -667,21 +568,17 @@ void renderBishop() {
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
     glBindVertexArray(0);
-}
+}*/
 
 void createQueen() {
-    //Reuse the vao from the pawn
-    glBindVertexArray(vao);
+    // Draw the body (cylinder)
+    drawCylinder(1.0f, 2.0f, 10, 10);
 
-    //Replace the pawn vertices with queenVertices
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(queenVertices), queenVertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    // Draw the head (sphere)
+    drawSphere(1.0f, 10, 10);
 }
 
-void renderQueen() {
+/*void renderQueen() {
     glUseProgram(shaderProgram);
 
     GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
@@ -694,24 +591,17 @@ void renderQueen() {
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
     glBindVertexArray(0);
-}
+}*/
 
 void createKing() {
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    // Draw the body (cylinder)
+    drawCylinder(1.0f, 2.0f, 10, 10);
 
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(kingVertices), kingVertices, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+    // Draw the head (cube)
+    drawCube(1.0f);
 }
 
-void renderKing() {
+/*void renderKing() {
     glUseProgram(shaderProgram);
 
     GLuint modelLoc = glGetUniformLocation(shaderProgram, "model");
@@ -725,5 +615,5 @@ void renderKing() {
     glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
     glBindVertexArray(0);
-}
+}*/
 
