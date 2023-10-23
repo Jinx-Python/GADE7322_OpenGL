@@ -2,10 +2,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class AnimationController {
+class Animation {
 public:
     //constructor - not really needed but c++ likes it so im leaving it here
-    AnimationController() : time(0.0f) {}
+    Animation() : time(0.0f) {}
 
     // Update the animation time (call this in your rendering loop after time variables are updated)
     // IF YOU DO NOT HAVE TIME VARIABLES....goodluck =) go look at the camera class tutorial they make use of it there
