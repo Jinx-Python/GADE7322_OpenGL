@@ -30,17 +30,17 @@ glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 
 glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
 void createPawn();
-void renderPawn();
+//void renderPawn();
 void createRook();
-void renderRook();
+//void renderRook();
 void createKnight();
-void renderKnight();
+//void renderKnight();
 void createBishop();
-void renderBishop();
+//void renderBishop();
 void createKing();
-void renderKing();
+//void renderKing();
 void createQueen();
-void renderQueen();
+//void renderQueen();
 
 
 Camera camera = Camera();
@@ -207,12 +207,12 @@ int main()
         myShader.setMat4("projection", projection);
         myShader.setMat4("model", model);
 
-        renderPawn();
+        /*renderPawn();
         renderRook();
         renderKnight();
         renderBishop();
         renderQueen();
-        renderKing();
+        renderKing();*/
 
 
         //math
