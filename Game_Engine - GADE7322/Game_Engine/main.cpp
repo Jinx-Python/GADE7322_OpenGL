@@ -14,6 +14,7 @@
 #include "basicCubeMesh.h"
 #include "camera.h"
 #include "ObjectContainer.h"
+#include "AnimationController.cpp"
 
 //using namespace std;
 
@@ -126,6 +127,8 @@ int main()
 
     glViewport(0, 0, 800, 600);
 
+
+
     // Create and compile the vertex shader
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -136,7 +139,7 @@ int main()
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
     //instantiate shader 
-    Shader myShader("resources/shaders/basic.shader.vert", "resources/shaders/basic.shader.frag");
+    Shader myShader("resources/shaders/basic.shader.vert", "resources/shaders/basic.shader.frag");    
 
     //load texture
 #pragma region TEXTURE
@@ -174,10 +177,34 @@ int main()
     createQueen();
     createKing();
 
+    AnimationController anim;
+
     while (!glfwWindowShouldClose(window))
-    {
+    {       
+
         //inputs
         processInput(window);
+
+        //when you normally create objects
+        ObjectContainer myObject;
+        /*basicCubeMesh myCube(vertices, indices);
+        basicCubeMesh myTriangle(pyramidVerts, pyramidInd);
+        myObject.addMesh(myCube,
+            glm::vec3(0, 0, 0),
+            glm::vec3(0, 0, 0),
+            glm::vec3(1, 1, 1));
+        myObject.addMesh(myTriangle,
+            glm::vec3(1.0f, 1.0f, 1.0f),
+            glm::vec3(0, 0, 0),
+            glm::vec3(1.5f, 1.5f, 1.5f));
+
+        //NOTE you still need to do animation on the model in main like normal
+        // world transformation
+        glm::mat4 model = glm::mat4(1.0f);
+        anim.applyComplicatedAnimation(model);*/
+
+        //but then you can just draw the container -- INSTEAD of the objects
+        myObject.Draw(model, myShader);
 
 
         //processing
