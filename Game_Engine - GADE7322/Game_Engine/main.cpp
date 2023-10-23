@@ -13,6 +13,7 @@
 #include <filesystem>
 #include "basicCubeMesh.h"
 #include "camera.h"
+#include "ObjectContainer.h"
 
 //using namespace std;
 
