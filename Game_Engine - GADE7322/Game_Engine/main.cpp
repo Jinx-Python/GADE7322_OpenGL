@@ -1,4 +1,7 @@
 #define STB_IMAGE_IMPLEMENTATION
+//#define M_PI 3.14159265358979323846
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include "stb_image.h"
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -329,6 +332,195 @@ void processInput(GLFWwindow* window)
     //all input managing things
 }
 
+void drawCube(float size) {
+    float halfSize = size / 2.0f;
+    glBegin(GL_QUADS);
+
+    // Front Face
+    glVertex3f(-halfSize, -halfSize, halfSize);
+    glVertex3f(halfSize, -halfSize, halfSize);
+    glVertex3f(halfSize, halfSize, halfSize);
+    glVertex3f(-halfSize, halfSize, halfSize);
+
+    // Back Face
+    glVertex3f(-halfSize, -halfSize, -halfSize);
+    glVertex3f(-halfSize, halfSize, -halfSize);
+    glVertex3f(halfSize, halfSize, -halfSize);
+    glVertex3f(halfSize, -halfSize, -halfSize);
+
+    // Left Face
+    glVertex3f(-halfSize, -halfSize, -halfSize);
+    glVertex3f(-halfSize, -halfSize, halfSize);
+    glVertex3f(-halfSize, halfSize, halfSize);
+    glVertex3f(-halfSize, halfSize, -halfSize);
+
+    // Right Face
+    glVertex3f(halfSize, -halfSize, -halfSize);
+    glVertex3f(halfSize, -halfSize, halfSize);
+    glVertex3f(halfSize, halfSize, halfSize);
+    glVertex3f(halfSize, halfSize, -halfSize);
+
+    // Top Face
+    glVertex3f(-halfSize, halfSize, -halfSize);
+    glVertex3f(-halfSize, halfSize, halfSize);
+    glVertex3f(halfSize, halfSize, halfSize);
+    glVertex3f(halfSize, halfSize, -halfSize);
+
+    // Bottom Face
+    glVertex3f(-halfSize, -halfSize, -halfSize);
+    glVertex3f(-halfSize, -halfSize, halfSize);
+    glVertex3f(halfSize, -halfSize, halfSize);
+    glVertex3f(halfSize, -halfSize, -halfSize);
+
+    glEnd();
+}
+
+void drawSphere(float radius, int stacks, int slices) {
+    std::vector<glm::vec3> vertices;
+    std::vector<GLuint> indices;
+    for (int i = 0; i <= stacks; ++i) {
+        float V = i / (float)stacks;
+        float phi = V * glm::pi<float>();
+        for (int j = 0; j <= slices; ++j) {
+            float U = j / (float)slices;
+            float theta = U * (glm::pi<float>() * 2);
+            float x = cosf(theta) * sinf(phi);
+            float y = cosf(phi);
+            float z = sinf(theta) * sinf(phi);
+            vertices.push_back(glm::vec3(x, y, z) * radius);
+        }
+    }
+    for (int i = 0; i < slices * stacks + slices; ++i) {
+        indices.push_back(i);
+        indices.push_back(i + slices + 1);
+        indices.push_back(i + slices);
+        indices.push_back(i + slices + 1);
+        indices.push_back(i);
+        indices.push_back(i + 1);
+    }
+
+    // Generate and bind the VAO
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    // Generate and bind the VBO
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+    // Generate and bind the EBO
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Unbind the VAO
+    glBindVertexArray(0);
+}
+
+void drawCylinder(float radius, float height, int stacks, int slices) {
+    std::vector<glm::vec3> vertices;
+    std::vector<GLuint> indices;
+    for (int i = 0; i < slices; ++i) {
+        GLfloat u = i / (GLfloat)slices;
+        GLfloat x = radius * cos(2 * M_PI * u);
+        GLfloat z = radius * sin(2 * M_PI * u);
+        vertices.push_back(glm::vec3(x, 0.0f, z));
+        vertices.push_back(glm::vec3(x, height, z));
+    }
+    for (int i = 0; i < slices; ++i) {
+        GLuint i1 = i;
+        GLuint i2 = (i + 1) % slices;
+        indices.push_back(i1);
+        indices.push_back(i2);
+    }
+    for (int i = 0; i < slices; ++i) {
+        GLuint i1 = i;
+        GLuint i2 = (i + 1) % slices;
+        indices.push_back(i1 + slices);
+        indices.push_back(i2 + slices);
+    }
+
+    // Generate and bind the VAO
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    // Generate and bind the VBO
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+    // Generate and bind the EBO
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Unbind the VAO
+    glBindVertexArray(0);
+}
+
+void drawCone(float radius, float height, int slices) {
+    std::vector<glm::vec3> vertices;
+    std::vector<GLuint> indices;
+    for (int i = 0; i <= slices; ++i) {
+        float U = i / (float)slices;
+        float theta = U * (glm::pi<float>() * 2);
+        float x = cosf(theta) * radius;
+        float z = sinf(theta) * radius;
+        vertices.push_back(glm::vec3(x, 0.0f, z));
+        vertices.push_back(glm::vec3(x, height, z));
+    }
+    for (int i = 0; i < slices; ++i) {
+        GLuint i1 = i;
+        GLuint i2 = (i + 1) % slices;
+        indices.push_back(i1);
+        indices.push_back(i2);
+    }
+    for (int i = 0; i < slices; ++i) {
+        GLuint i1 = i;
+        GLuint i2 = (i + 1) % slices;
+        indices.push_back(i1 + slices);
+        indices.push_back(i2 + slices);
+    }
+
+    // Generate and bind the VAO
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glBindVertexArray(vao);
+
+    // Generate and bind the VBO
+    GLuint vbo;
+    glGenBuffers(1, &vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+    // Generate and bind the EBO
+    GLuint ebo;
+    glGenBuffers(1, &ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+
+    // Position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Unbind the VAO
+    glBindVertexArray(0);
+}
+
 void createPawn() {
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -510,3 +702,4 @@ void renderKing() {
     glDrawArrays(GL_TRIANGLE_FAN, 0, 7);
     glBindVertexArray(0);
 }
+
