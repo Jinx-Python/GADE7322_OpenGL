@@ -13,6 +13,10 @@
 
 //using namespace std;
 
+//glEnable(GL_COLOR_MATERIAL);
+//glColorMaterial(GL_FRONT, GL_DIFFUSE);
+//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
+
 GLuint shaderProgram;
 GLuint vao, vbo;
 glm::mat4 model = glm::mat4(1.0f);
@@ -132,6 +136,47 @@ GLfloat kingVertices[] = {
     0.0f, 0.25f, 0.0f
 };
 
+//chessboard vertices
+float vertices[] = {
+    // positions         // colors
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+};
+
+// Vertex shader source code
+const char* vertexShaderSource = R"glsl(
+    #version 330 core
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec2 aTexCoord;
+
+    void main()
+    {
+        gl_Position = vec4(aPos, 1.0);
+    }
+)glsl";
+
+// Fragment shader source code
+const char* fragmentShaderSource = R"glsl(
+    #version 330 core
+    out vec4 FragColor;
+
+    void main()
+    {
+        FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+    }
+)glsl";
+
 int main()
 {
 #pragma region GLFW_INIT_&_SETUP
@@ -163,6 +208,11 @@ int main()
 
     glViewport(0, 0, 800, 600);
 
+    // Create and compile the vertex shader
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
 #pragma endregion
 
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
@@ -190,120 +240,14 @@ int main()
     int width, height, nrChannels;
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
     //unsigned char* data = stbi_load(imagePath.generic_string().c_str(), &width, &height, &nrChannels, 0);
-    /*if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);*/
+    
 #pragma endregion
 
 
     //after setup 
-    //define model properties
+    //define model properties   
 
-
-    //convert vertices into basic vertx class
-    //std::vector<basicVertex> vertices = {
-    //    {glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f,0.0f)},
-    //    {glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f,0.0f)},
-    //    {glm::vec3(0.0f,  0.5f, 0.0), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.5f,1.0f)}
-    //};
-
-    //basicMesh myTriangle(vertices);
-    std::vector<basicCubeVertex> vertices = {
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)},
-
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-
-        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-    };
-
-    std::vector<basicCubeVertex> verticesSequel = {
-       {glm::vec3(-0.5f, -0.5f, -1.5f), glm::vec2(0.0f, 0.0f)},
-       {glm::vec3(0.5f, -0.5f, -1.5f), glm::vec2(1.0f, 0.0f)},
-       {glm::vec3(0.5f,  0.5f, -1.5f), glm::vec2(1.0f, 1.0f)},
-       {glm::vec3(0.5f,  0.5f, -1.5f), glm::vec2(1.0f, 1.0f)},
-       {glm::vec3(-0.5f,  0.5f, -1.5f), glm::vec2(0.0f, 1.0f)},
-       {glm::vec3(-0.5f, -0.5f, -1.5f), glm::vec2(0.0f, 0.0f)},
-
-       {glm::vec3(-0.5f, -0.5f,  -0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f,  -0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f,  -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f,  -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f,  0.5f,  -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f,  -0.5f), glm::vec2(0.0f, 0.0f)},
-
-       {glm::vec3(-0.5f,  0.5f,  -1.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f,  -1.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f,  -1.5f), glm::vec2(1.0f, 0.0f)},
-
-       {glm::vec3(0.5f,  0.5f,  -1.5f), glm::vec2(1.0f, 0.0f)},
-       {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-       {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-       {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-       {glm::vec3(0.5f, -0.5f,  -1.5f), glm::vec2(0.0f, 0.0f)},
-       {glm::vec3(0.5f,  0.5f,  -1.5f), glm::vec2(1.0f, 0.0f)},
-
-       {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-
-       {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-       {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-       {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-       {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-       {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-       {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-    };
-    basicCubeMesh myCube(vertices);
-    basicCubeMesh myCubeSequel(verticesSequel);
+    //basicMesh myTriangle(vertices);  
 
     createPawn();
     createBishop();
@@ -321,6 +265,7 @@ int main()
         //processing
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //RGB values to change colour
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//******* changes
+        
 
         glBindTexture(GL_TEXTURE_2D, texture1);
 
@@ -344,8 +289,6 @@ int main()
 
         myShader.setMat4("projection", projection);
         myShader.setMat4("model", model);
-        myCube.Draw(myShader);
-        myCubeSequel.Draw(myShader);
 
         renderPawn();
         renderRook();
@@ -370,6 +313,7 @@ int main()
 
     //return 0;
 }
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {

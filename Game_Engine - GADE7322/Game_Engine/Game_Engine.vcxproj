@@ -109,7 +109,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\User\Desktop\GADE7322_OpenGL\Game_Engine - GADE7322\Game_Engine\includes\glfw-3.3.8.bin.WIN64;C:\Users\User\Desktop\GADE7322_OpenGL\Game_Engine - GADE7322\Game_Engine\Cluedins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\User\Desktop\GADE7322_OpenGL\Game_Engine - GADE7322\Game_Engine\Cluedins\glfw-3.3.8.bin.WIN64\include;C:\Users\User\Desktop\GADE7322_OpenGL\Game_Engine - GADE7322\Game_Engine\includes\glfw-3.3.8.bin.WIN64;C:\Users\User\Desktop\GADE7322_OpenGL\Game_Engine - GADE7322\Game_Engine\Cluedins;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,12 +135,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="basicCubeMesh.h" />
     <ClInclude Include="basicMesh.h" />
     <ClInclude Include="camera.h" />
