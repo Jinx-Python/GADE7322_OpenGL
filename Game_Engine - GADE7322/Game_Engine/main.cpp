@@ -174,7 +174,7 @@ int main()
 #pragma region TEXTURE
 
     unsigned int texture1;
-    std::filesystem::path imagePath = "resources/textures/garfield.png";
+    //std::filesystem::path imagePath = "resources/textures/garfield.png";
 
     //texture 1
 
@@ -189,8 +189,8 @@ int main()
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-    unsigned char* data = stbi_load(imagePath.generic_string().c_str(), &width, &height, &nrChannels, 0);
-    if (data)
+    //unsigned char* data = stbi_load(imagePath.generic_string().c_str(), &width, &height, &nrChannels, 0);
+    /*if (data)
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -199,7 +199,7 @@ int main()
     {
         std::cout << "Failed to load texture" << std::endl;
     }
-    stbi_image_free(data);
+    stbi_image_free(data);*/
 #pragma endregion
 
 
