@@ -24,8 +24,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 
-
-
 int main()
 {
 #pragma region GLFW_INIT_&_SETUP
@@ -97,11 +95,12 @@ int main()
     stbi_image_free(data);
 #pragma endregion
 
+
     //after setup 
     //define model properties
 
+
     //convert vertices into basic vertx class
-<<<<<<< Updated upstream
     //std::vector<basicVertex> vertices = {
     //    {glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f,0.0f)},
     //    {glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f,0.0f)},
@@ -198,13 +197,6 @@ int main()
     };
     basicCubeMesh myCube(vertices);
     basicCubeMesh myCubeSequel(verticesSequel);
-=======
-    std::vector<basicVertex> vertices = {
-        {glm::vec3(0.5f, -0.5f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f,0.0f)},
-        {glm::vec3(-0.5f, -0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), glm::vec2(1.0f,0.0f)},
-        {glm::vec3(0.0f,  0.5f, 0.0), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.5f,1.0f)}
-    };    
->>>>>>> Stashed changes
 
 
 
@@ -218,22 +210,16 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //RGB values to change colour
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//******* changes
 
-        drawChessboard();
-        drawBorder();
-
         glBindTexture(GL_TEXTURE_2D, texture1);
 
         //=============================================
         //cube 
         glm::mat4 model = glm::mat4(1.0f);
-<<<<<<< Updated upstream
         glm::mat4 modelSequel = glm::mat4(1.0f);
         //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
         //modelSequel = glm::rotate(modelSequel, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
         //modelSequel = glm::translate(modelSequel, glm::vec3(0.0f, 0.0f, 1.0f));
-=======
->>>>>>> Stashed changes
 
         glm::mat4 view = glm::mat4(1.0f);
         // note that we're translating the scene in the reverse direction of where we want to move
@@ -250,15 +236,10 @@ int main()
 
         myShader.setMat4("projection", projection);
         myShader.setMat4("model", model);
-<<<<<<< Updated upstream
         myShaderSequel.setMat4("projection", projection);
         myShaderSequel.setMat4("model", modelSequel);
         myCube.Draw(myShader);
         myCubeSequel.Draw(myShaderSequel);
-=======
-        //myCube.Draw(myShader);
-        //myCubeSequel.Draw(myShader);
->>>>>>> Stashed changes
 
 
 
@@ -276,46 +257,6 @@ int main()
     return 0;
 
     //return 0;
-}
-
-void drawChessboard()
-{
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            if ((i + j) % 2 == 0)
-            {
-                // Draw a black square
-                glColor3f(0.0f, 0.0f, 0.0f);
-            }
-            else
-            {
-                // Draw a white square
-                glColor3f(1.0f, 1.0f, 1.0f);
-            }
-
-            glBegin(GL_QUADS);
-            glVertex3f(i, 0, j);
-            glVertex3f(i, 0, j + 1);
-            glVertex3f(i + 1, 0, j + 1);
-            glVertex3f(i + 1, 0, j);
-            glEnd();
-        }
-    }
-}
-
-void drawBorder()
-{
-    // Draw a black border
-    glColor3f(0.0f, 0.0f, 0.0f);
-
-    glBegin(GL_QUADS);
-    glVertex3f(-1, 0, -1);
-    glVertex3f(-1, 0, 8);
-    glVertex3f(8, 0, 8);
-    glVertex3f(8, 0, -1);
-    glEnd();
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
