@@ -109,6 +109,7 @@ int main()
 
     //basicMesh myTriangle(vertices);
     std::vector<basicCubeVertex> vertices = {
+        //1
         {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)},
         {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 0.0f)},
         {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
@@ -116,6 +117,7 @@ int main()
         {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
         {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)},
 
+        //2
         {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
         {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
         {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 1.0f)},
@@ -123,6 +125,7 @@ int main()
         {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 1.0f)},
         {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
 
+        //3
         {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
         {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
         {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
@@ -130,6 +133,7 @@ int main()
         {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
         {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
 
+        //4
         {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
         {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
         {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
@@ -137,50 +141,7 @@ int main()
         {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
         {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
 
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-    };
-
-    std::vector<basicCubeVertex> verticesSequel = {
-       {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)},
-
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-
-        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
-        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
-        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
-
+        //5
         {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
         {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
         {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
@@ -196,9 +157,115 @@ int main()
         {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
     };
     basicCubeMesh myCube(vertices);
-    basicCubeMesh myCubeSequel(verticesSequel);
 
+    glm::vec3 cubePositions[] =
+    {
+        //1
+        glm::vec3(0.0f, 13.0f, 0.0f),//1
+        glm::vec3(1.0f, 13.0f, 0.0f),//2
+        glm::vec3(2.0f, 13.1f, 0.0f),//3
+        glm::vec3(3.0f, 13.2f, 0.0f),//4
+        glm::vec3(4.0f, 13.3f, 0.0f),//5
+        glm::vec3(-1.0f, 13.1f, 0.0f),//6
+        glm::vec3(-2.0f, 13.2f, 0.0f),//7
+        glm::vec3(-3.0f, 13.3f, 0.0f),//8
+        //2
+        glm::vec3(1.0f, 13.0f, 1.0f),//1
+        glm::vec3(0.0f, 13.0f, 1.0f),//2
+        glm::vec3(3.0f, 13.1f, 1.0f),//3
+        glm::vec3(2.0f, 13.2f, 1.0f),//4
+        glm::vec3(-1.0f, 13.3f, 1.0f),//5
+        glm::vec3(4.0f, 13.1f, 1.0f),//6
+        glm::vec3(-3.0f, 13.2f, 1.0f),//7
+        glm::vec3(-2.0f, 13.3f, 1.0f),//8
+        //3
+        glm::vec3(0.0f, 13.0f, 2.0f),//1
+        glm::vec3(1.0f, 13.0f, 2.0f),//2
+        glm::vec3(2.0f, 13.1f, 2.0f),//3
+        glm::vec3(3.0f, 13.2f, 2.0f),//4
+        glm::vec3(4.0f, 13.3f, 2.0f),//5
+        glm::vec3(-1.0f, 13.1f, 2.0f),//6
+        glm::vec3(-2.0f, 13.2f, 2.0f),//7
+        glm::vec3(-3.0f, 13.3f, 2.0f),//8
+        //4
+        glm::vec3(1.0f, 13.0f, 3.0f),//1
+        glm::vec3(0.0f, 13.0f, 3.0f),//2
+        glm::vec3(3.0f, 13.1f, 3.0f),//3
+        glm::vec3(2.0f, 13.2f, 3.0f),//4
+        glm::vec3(-1.0f, 13.3f, 3.0f),//5
+        glm::vec3(4.0f, 13.1f, 3.0f),//6
+        glm::vec3(-3.0f, 13.2f, 3.0f),//7
+        glm::vec3(-2.0f, 13.3f, 3.0f),//8
+        //5
+        glm::vec3(0.0f, 13.0f, -1.0f),//1
+        glm::vec3(1.0f, 13.0f, -1.0f),//2
+        glm::vec3(2.0f, 13.1f, -1.0f),//3
+        glm::vec3(3.0f, 13.2f, -1.0f),//4
+        glm::vec3(4.0f, 13.3f, -1.0f),//5
+        glm::vec3(-1.0f, 13.1f, -1.0f),//6
+        glm::vec3(-2.0f, 13.2f, -1.0f),//7
+        glm::vec3(-3.0f, 13.3f, -1.0f),//8
+        //6
+        glm::vec3(1.0f, 13.0f, -2.0f),//1
+        glm::vec3(0.0f, 13.0f, -2.0f),//2
+        glm::vec3(3.0f, 13.1f, -2.0f),//3
+        glm::vec3(2.0f, 13.2f, -2.0f),//4
+        glm::vec3(-1.0f, 13.3f, -2.0f),//5
+        glm::vec3(4.0f, 13.1f, -2.0f),//6
+        glm::vec3(-3.0f, 13.2f, -2.0f),//7
+        glm::vec3(-2.0f, 13.3f, -2.0f),//8
+        //7
+        glm::vec3(0.0f, 13.0f, -3.0f),//1
+        glm::vec3(1.0f, 13.0f, -3.0f),//2
+        glm::vec3(2.0f, 13.1f, -3.0f),//3
+        glm::vec3(3.0f, 13.2f, -3.0f),//4
+        glm::vec3(4.0f, 13.3f, -3.0f),//5
+        glm::vec3(-1.0f, 13.1f, -3.0f),//6
+        glm::vec3(-2.0f, 13.2f, -3.0f),//7
+        glm::vec3(-3.0f, 13.3f, -3.0f),//8
+    };
 
+    glm::vec3 cubePositions2[] =
+    {
+        //1
+        glm::vec3(4.5f, 12.5f, 4.5f),//1
+        glm::vec3(3.5f, 12.5f, 4.5f),//2
+        glm::vec3(2.5f, 12.5f, 4.5f),//3
+        glm::vec3(1.5f, 12.5f, 4.5f),//4
+        glm::vec3(0.5f, 12.5f, 4.5f),//5
+        glm::vec3(-0.5f, 12.5f, 4.5f),//6
+        glm::vec3(-1.5f, 12.5f, 4.5f),//7
+        glm::vec3(-2.5f, 12.5f, 4.5f),//8
+        glm::vec3(-3.5f, 12.5f, 4.5f),//9
+        //2
+        glm::vec3(4.5f, 12.5f, 3.5f),//1
+        glm::vec3(4.5f, 12.5f, 2.5f),//2
+        glm::vec3(4.5f, 12.5f, 1.5f),//3
+        glm::vec3(4.5f, 12.5f, 0.5f),//4
+        glm::vec3(4.5f, 12.5f, -0.5f),//5
+        glm::vec3(4.5f, 12.5f, -1.5f),//6
+        glm::vec3(4.5f, 12.5f, -2.5f),//7
+        glm::vec3(4.5f, 12.5f, -3.5f),//8
+        //3
+        glm::vec3(4.5f, 12.5f, -3.5f),//1
+        glm::vec3(3.5f, 12.5f, -3.5f),//2
+        glm::vec3(2.5f, 12.5f, -3.5f),//3
+        glm::vec3(1.5f, 12.5f, -3.5f),//4
+        glm::vec3(0.5f, 12.5f, -3.5f),//5
+        glm::vec3(-0.5f, 12.5f, -3.5f),//6
+        glm::vec3(-1.5f, 12.5f, -3.5f),//7
+        glm::vec3(-2.5f, 12.5f, -3.5f),//8
+        glm::vec3(-3.5f, 12.5f, -3.5f),//9
+        //4
+        glm::vec3(-3.5f, 12.5f, 3.5f),//1
+        glm::vec3(-3.5f, 12.5f, 2.5f),//2
+        glm::vec3(-3.5f, 12.5f, 1.5f),//3
+        glm::vec3(-3.5f, 12.5f, 0.5f),//4
+        glm::vec3(-3.5f, 12.5f, -0.5f),//5
+        glm::vec3(-3.5f, 12.5f, -1.5f),//6
+        glm::vec3(-3.5f, 12.5f, -2.5f),//7
+        glm::vec3(-3.5f, 12.5f, -3.5f),//8        
+    };
 
     while (!glfwWindowShouldClose(window))
     {
@@ -239,7 +306,6 @@ int main()
         myShaderSequel.setMat4("projection", projection);
         myShaderSequel.setMat4("model", modelSequel);
         myCube.Draw(myShader);
-        myCubeSequel.Draw(myShaderSequel);
 
 
 
