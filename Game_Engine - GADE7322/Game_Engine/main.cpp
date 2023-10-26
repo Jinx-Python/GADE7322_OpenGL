@@ -145,7 +145,11 @@ int main()
 #pragma region TEXTURE
 
     unsigned int texture1;
+<<<<<<< Updated upstream
     //std::filesystem::path imagePath = "resources/textures/garfield.png";
+=======
+    std::filesystem::path imagePath = "resources/textures/ChessboardTexture.png";
+>>>>>>> Stashed changes
 
     //texture 1
 
@@ -177,7 +181,199 @@ int main()
     createQueen();
     createKing();
 
+<<<<<<< Updated upstream
     AnimationController anim;
+=======
+    //basicMesh myTriangle(vertices);
+    std::vector<basicCubeVertex> vertices = {
+        //1
+        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)},
+        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 0.0f)},
+        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
+        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
+        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 0.0f)},
+
+        //2
+        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
+        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 1.0f)},
+        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 1.0f)},
+        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 1.0f)},
+        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
+
+        //3
+        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
+        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
+        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+
+        //4
+        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
+        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
+        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+
+        //5
+        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+        {glm::vec3(0.5f, -0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
+        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+        {glm::vec3(0.5f, -0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+        {glm::vec3(-0.5f, -0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
+        {glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+
+        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+        {glm::vec3(0.5f,  0.5f, -0.5f), glm::vec2(1.0f, 1.0f)},
+        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+        {glm::vec3(0.5f,  0.5f,  0.5f), glm::vec2(1.0f, 0.0f)},
+        {glm::vec3(-0.5f,  0.5f,  0.5f), glm::vec2(0.0f, 0.0f)},
+        {glm::vec3(-0.5f,  0.5f, -0.5f), glm::vec2(0.0f, 1.0f)},
+    };
+    basicCubeMesh myCube(vertices);
+
+    glm::vec3 cubePositions[] =
+    {
+        //1
+        glm::vec3(0.0f, 13.0f, 0.0f),
+        glm::vec3(1.0f, 13.0f, 0.0f),
+        glm::vec3(2.0f, 13.1f, 0.0f),
+        glm::vec3(3.0f, 13.2f, 0.0f),
+        glm::vec3(4.0f, 13.3f, 0.0f),
+        glm::vec3(-1.0f, 13.1f, 0.0f),
+        glm::vec3(-2.0f, 13.2f, 0.0f),
+        glm::vec3(-3.0f, 13.3f, 0.0f),
+
+        //2
+        glm::vec3(1.0f, 13.0f, 1.0f),
+        glm::vec3(0.0f, 13.0f, 1.0f),
+        glm::vec3(3.0f, 13.1f, 1.0f),
+        glm::vec3(2.0f, 13.2f, 1.0f),
+        glm::vec3(-1.0f, 13.3f, 1.0f),
+        glm::vec3(4.0f, 13.1f, 1.0f),
+        glm::vec3(-3.0f, 13.2f, 1.0f),
+        glm::vec3(-2.0f, 13.3f, 1.0f),
+
+        //3
+        glm::vec3(0.0f, 13.0f, 2.0f),
+        glm::vec3(1.0f, 13.0f, 2.0f),
+        glm::vec3(2.0f, 13.1f, 2.0f),
+        glm::vec3(3.0f, 13.2f, 2.0f),
+        glm::vec3(4.0f, 13.3f, 2.0f),
+        glm::vec3(-1.0f, 13.1f, 2.0f),
+        glm::vec3(-2.0f, 13.2f, 2.0f),
+        glm::vec3(-3.0f, 13.3f, 2.0f),
+
+        //4
+        glm::vec3(1.0f, 13.0f, 3.0f),
+        glm::vec3(0.0f, 13.0f, 3.0f),
+        glm::vec3(3.0f, 13.1f, 3.0f),
+        glm::vec3(2.0f, 13.2f, 3.0f),
+        glm::vec3(-1.0f, 13.3f, 3.0f),
+        glm::vec3(4.0f, 13.1f, 3.0f),
+        glm::vec3(-3.0f, 13.2f, 3.0f),
+        glm::vec3(-2.0f, 13.3f, 3.0f),
+
+        //5
+        glm::vec3(0.0f, 13.0f, -1.0f),
+        glm::vec3(1.0f, 13.0f, -1.0f),
+        glm::vec3(2.0f, 13.1f, -1.0f),
+        glm::vec3(3.0f, 13.2f, -1.0f),
+        glm::vec3(4.0f, 13.3f, -1.0f),
+        glm::vec3(-1.0f, 13.1f, -1.0f),
+        glm::vec3(-2.0f, 13.2f, -1.0f),
+        glm::vec3(-3.0f, 13.3f, -1.0f),
+
+        //6
+        glm::vec3(1.0f, 13.0f, -2.0f),
+        glm::vec3(0.0f, 13.0f, -2.0f),
+        glm::vec3(3.0f, 13.1f, -2.0f),
+        glm::vec3(2.0f, 13.2f, -2.0f),
+        glm::vec3(-1.0f, 13.3f, -2.0f),
+        glm::vec3(4.0f, 13.1f, -2.0f),
+        glm::vec3(-3.0f, 13.2f, -2.0f),
+        glm::vec3(-2.0f, 13.3f, -2.0f),
+
+        //7
+        glm::vec3(0.0f, 13.0f, -3.0f),
+        glm::vec3(1.0f, 13.0f, -3.0f),
+        glm::vec3(2.0f, 13.1f, -3.0f),
+        glm::vec3(3.0f, 13.2f, -3.0f),
+        glm::vec3(4.0f, 13.3f, -3.0f),
+        glm::vec3(-1.0f, 13.1f, -3.0f),
+        glm::vec3(-2.0f, 13.2f, -3.0f),
+        glm::vec3(-3.0f, 13.3f, -3.0f),
+    };
+
+    glm::vec3 cubePositions2[] =
+    {
+        //1
+        glm::vec3(4.5f, 12.5f, 4.5f),
+        glm::vec3(3.5f, 12.5f, 4.5f),
+        glm::vec3(2.5f, 12.5f, 4.5f),
+        glm::vec3(1.5f, 12.5f, 4.5f),
+        glm::vec3(0.5f, 12.5f, 4.5f),
+        glm::vec3(-0.5f, 12.5f, 4.5f),
+        glm::vec3(-1.5f, 12.5f, 4.5f),
+        glm::vec3(-2.5f, 12.5f, 4.5f),
+        glm::vec3(-3.5f, 12.5f, 4.5f),
+
+        //2
+        glm::vec3(4.5f, 12.5f, 3.5f),
+        glm::vec3(4.5f, 12.5f, 2.5f),
+        glm::vec3(4.5f, 12.5f, 1.5f),
+        glm::vec3(4.5f, 12.5f, 0.5f),
+        glm::vec3(4.5f, 12.5f, -0.5f),
+        glm::vec3(4.5f, 12.5f, -1.5f),
+        glm::vec3(4.5f, 12.5f, -2.5f),
+        glm::vec3(4.5f, 12.5f, -3.5f),
+
+        //3
+        glm::vec3(4.5f, 12.5f, -3.5f),
+        glm::vec3(3.5f, 12.5f, -3.5f),
+        glm::vec3(2.5f, 12.5f, -3.5f),
+        glm::vec3(1.5f, 12.5f, -3.5f),
+        glm::vec3(0.5f, 12.5f, -3.5f),
+        glm::vec3(-0.5f, 12.5f, -3.5f),
+        glm::vec3(-1.5f, 12.5f, -3.5f),
+        glm::vec3(-2.5f, 12.5f, -3.5f),
+        glm::vec3(-3.5f, 12.5f, -3.5f),
+
+        //4
+        glm::vec3(-3.5f, 12.5f, 3.5f),
+        glm::vec3(-3.5f, 12.5f, 2.5f),
+        glm::vec3(-3.5f, 12.5f, 1.5f),
+        glm::vec3(-3.5f, 12.5f, 0.5f),
+        glm::vec3(-3.5f, 12.5f, -0.5f),
+        glm::vec3(-3.5f, 12.5f, -1.5f),
+        glm::vec3(-3.5f, 12.5f, -2.5f),
+        glm::vec3(-3.5f, 12.5f, -3.5f),       
+    };
+    
+    //Pawn
+    //Head (sphere)
+    //GLfloat sphereVertices[] = { /* vertices for the sphere */ };
+    //GLuint sphereVAO, sphereVBO;
+    //glGenVertexArrays(1, &sphereVAO);
+    //glGenBuffers(1, &sphereVBO);
+    //glBindVertexArray(sphereVAO);
+    //glBindBuffer(GL_ARRAY_BUFFER, sphereVBO);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(sphereVertices), sphereVertices, GL_STATIC_DRAW);
+
+    //Body (cylinder)
+    //GLfloat cylinderVertices[] = { /* vertices for the cylinder */ };
+    //GLuint cylinderVAO, cylinderVBO;
+    //glGenVertexArrays(1, &cylinderVAO);
+    //glGenBuffers(1, &cylinderVBO);
+    //glBindVertexArray(cylinderVAO);
+    //glBindBuffer(GL_ARRAY_BUFFER, cylinderVBO);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(cylinderVertices), cylinderVertices, GL_STATIC_DRAW); 
+    
+    
+>>>>>>> Stashed changes
 
     while (!glfwWindowShouldClose(window))
     {       
@@ -219,7 +415,12 @@ int main()
         glm::mat4 model = glm::mat4(1.0f);
         //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+<<<<<<< Updated upstream
         //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
+=======
+        //modelSequel = glm::rotate(modelSequel, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        //modelSequel = glm::translate(modelSequel, glm::vec3(0.0f, 0.0f, 1.0f));
+>>>>>>> Stashed changes
 
         glm::mat4 view = glm::mat4(1.0f);
         // note that we're translating the scene in the reverse direction of where we want to move
@@ -274,6 +475,7 @@ void processInput(GLFWwindow* window)
     //all input managing things
 }
 
+<<<<<<< Updated upstream
 void drawCube(float size) {
     float halfSize = size / 2.0f;
 
@@ -623,3 +825,5 @@ void createKing() {
     glBindVertexArray(0);
 }*/
 
+=======
+>>>>>>> Stashed changes
