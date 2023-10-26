@@ -67,7 +67,7 @@ int main()
 #pragma region TEXTURE
 
     unsigned int texture1;
-    std::filesystem::path imagePath = "resources/textures/garfield.png";
+    std::filesystem::path imagePath = "resources/textures/ChessboardTexture.png";
 
     //texture 1
 
