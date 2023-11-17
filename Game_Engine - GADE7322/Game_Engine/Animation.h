@@ -1,70 +1,67 @@
-#ifndef OBJECTCONTAINER_H
-#define OBJECTCONTAINER_H
-
-#include <vector>
-#include "BasicCubeMesh.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-//struct to store which mesh has which offsets
-struct MeshWithTransform {
-	//this mesh is whatever mesh object your children are using
-	//NOTE: all child meshes have to be made with the same mesh class, so same vertex properties (for now anyways, easier)
-	basicCubeMesh mesh;
-	glm::vec3 pos;
-	glm::vec3 rot;
-	glm::vec3 scale;
-
-	//Constructor that sets default variables,
-	//this is shorthand setting of variables, basically just a normal constructor dont worry
-	MeshWithTransform(basicCubeMesh mesh, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
-		: mesh(mesh), pos(position), rot(rotation), scale(scale) {}
-
-};
-
-class ObjectContainer {
+class Animation {
 public:
+    //constructor - not really needed but c++ likes it so im leaving it here
+    Animation() : time(0.0f) {}
 
-	ObjectContainer() {}
+    // Update the animation time (call this in your rendering loop after time variables are updated)
+    // IF YOU DO NOT HAVE TIME VARIABLES....goodluck =) go look at the camera class tutorial they make use of it there
+    void update(float deltaTime) {
+        time += deltaTime;
+    }
 
-	//function to add an object/mesh to this container
-	void addMesh(basicCubeMesh mesh, glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) {
-		meshes.push_back(MeshWithTransform(mesh, position, rotation, scale));
-	}
+    // Rotation animation, this is a bit more generic, we can use speed and origin
+    //PS you can change the origin of rotation, by passing in an extra vec3 variable when calling this function
+    void applyRotationAnimation(glm::mat4& model, float speed, glm::vec3 origin = glm::vec3(0.0f, 1.0f, 0.0f)) {
+        float rotationAngle = speed * time;
+        model = glm::rotate(model, glm::radians(rotationAngle), origin);
+    }
+
+    // Apply Bouncing Animation, makes use of amplitude and frequency
+    void applyBouncingAnimation(glm::mat4& model, float amplitude, float frequency) {
+        float yOffset = amplitude * sin(time * frequency);
+        model = glm::translate(model, glm::vec3(0.0f, yOffset, 0.0f));
+    }
+    //rotation animation but has a radius offset, NOTE: This can be done with translation + rotation, you do not need trig to do this
+    //this is only if you have translation and DO NOT want to rotate based off of it
+    void applyOffsetRotationAnimation(glm::mat4& model, float rotationSpeed, float offsetRadius) {
+        //more mathy transformations
+        float rotationAngle = time * rotationSpeed;
+        //Trig for positioning
+        float x = offsetRadius * cos(glm::radians(rotationAngle));
+        float y = offsetRadius * sin(glm::radians(rotationAngle));
+
+        model = glm::translate(model, glm::vec3(x, y, 0.0f));
+        model = glm::rotate(model, glm::radians(rotationAngle), glm::vec3(0.0f, 0.0f, 1.0f));
+    }
+
+    void applyComplicatedAnimation(glm::mat4& model) {
+        //lissajous figures, basically two sin waves mashed together to create a closed curve (repeatable, but complex)
+        float A = 2.3f;    // Adjust as needed
+        float B = 2.5f;    // Adjust as needed
+        float omegaX = 2.0f;
+        float omegaY = 3.0f;
+        float phaseOffset = glm::radians(45.0f);  // Adjust as needed
+
+        float x = A * sin(omegaX * time + phaseOffset);
+        float y = B * sin(omegaY * time);
+        model = glm::translate(model, glm::vec3(x, y, 0.0f));
+    }
+
+    void applyBreathingAnimation(glm::mat4& model, float speedMulti = 1, float amplitude = 1.0f) {
+        float scale = 1.0f;
+        scale = amplitude * sin(time * speedMulti);
+        model = glm::scale(model, glm::vec3(scale, scale, scale));
+
+    }
 
 
-	void Draw(glm::mat4 model, Shader& shader) {
-		for (MeshWithTransform mesh : meshes) { //normal foreach loop 
 
-			// apply local transformations to the model matrix
-			glm::mat4 localModel = glm::mat4(1.0f); // Initialize with the identity matrix
 
-			// apply local translation
-			localModel = glm::translate(localModel, mesh.pos);
 
-			// apply local rotation
-			localModel = glm::rotate(localModel, glm::radians(mesh.rot.x), glm::vec3(1.0f, 0.0f, 0.0f));
-			localModel = glm::rotate(localModel, glm::radians(mesh.rot.y), glm::vec3(0.0f, 1.0f, 0.0f));
-			localModel = glm::rotate(localModel, glm::radians(mesh.rot.z), glm::vec3(0.0f, 0.0f, 1.0f));
-
-			// apply local scale
-			localModel = glm::scale(localModel, mesh.scale);
-
-			// combine the local transformations with the provided model matrix
-			// this means that you do animation on the whole matrix before moving the children around
-			glm::mat4 finalModel = model * localModel;
-
-			// set the model matrix in the shader
-			shader.setMat4("model", finalModel);
-
-			// render the mesh with the global + local matrix
-			mesh.mesh.Draw(shader);
-		}
-	}
 
 private:
-	//private string to hold all objects for this container (including offsets/transforms)
-	std::vector<MeshWithTransform> meshes;
+    float time;
 };
-
-#endif
