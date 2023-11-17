@@ -17,9 +17,7 @@ Camera camera = Camera();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
 
 float lastX = 400, lastY = 300;
 bool firstMouse = true;
@@ -56,9 +54,7 @@ int main()
 
     glViewport(0, 0, 800, 600);
 
-    glfwSetKeyCallback(window, key_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
+    
 
 #pragma endregion
 
@@ -248,43 +244,7 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    
 
-    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
-        camera.toggleFreeLook();  // Toggle free look when the TAB key is pressed
-
-    if (camera.isFreeLook()) {
-        camera.processInput(window);  // Process free look camera input
-    }
-}
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
-    camera.processKeyboardInput(key, action);
-}
-
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
-
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
-    lastX = xpos;
-    lastY = ypos;
-
-    if (camera.isFreeLook())
-        camera.processMouseMovement(xoffset, yoffset);
-}
-
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    if (camera.isFreeLook())
-        camera.processMouseScroll(yoffset);
+    //all input managing things
 }
