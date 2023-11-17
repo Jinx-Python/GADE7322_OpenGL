@@ -25,6 +25,10 @@ private:
     glm::vec3 cameraUp;        //Up vector of the free look camera
     bool freeLook;             //Flag indicating whether the camera is in free look mode
 
+    // Added pitch and yaw
+    float pitch;
+    float yaw;
+
     // Functions for free look camera movement
     void updateFreeLookCameraVectors();
     void processFreeLookInput(GLFWwindow* window, int key, int action);
