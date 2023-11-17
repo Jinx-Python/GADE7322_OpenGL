@@ -13,6 +13,13 @@
 class Camera {
 public:
     Camera();
+
+    void toggleFreeLook();
+    bool isFreeLook() const;
+    void processInput(GLFWwindow* window);
+    void processMouseMovement(float xoffset, float yoffset);
+    void processMouseScroll(float yoffset);
+    void processKeyboardInput(int key, int action);
     void processInput(GLFWwindow* window, int key, int action);
     glm::mat4 getViewMatrix();
 
@@ -25,16 +32,16 @@ private:
     glm::vec3 cameraUp;        //Up vector of the free look camera
     bool freeLook;             //Flag indicating whether the camera is in free look mode
 
-    // Added pitch and yaw
+    //Added pitch and yaw
     float pitch;
     float yaw;
 
-    // Functions for free look camera movement
+    //Functions for free look camera movement
     void updateFreeLookCameraVectors();
     void processFreeLookInput(GLFWwindow* window, int key, int action);
     void processMouseMovement(GLFWwindow* window, double xpos, double ypos);
 
-    // Constants for camera movement
+    //Constants for camera movement
     float cameraSpeed;
     float sensitivity;
 };

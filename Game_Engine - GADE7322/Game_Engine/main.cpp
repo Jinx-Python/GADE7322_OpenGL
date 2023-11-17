@@ -17,11 +17,12 @@ Camera camera = Camera();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    camera.processKeyboardInput(key, action);
-}
+float lastX = 400, lastY = 300;
+bool firstMouse = true;
 
 
 int main()
@@ -54,6 +55,10 @@ int main()
     glEnable(GL_DEPTH_TEST);//****** changes
 
     glViewport(0, 0, 800, 600);
+
+    glfwSetKeyCallback(window, key_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
 #pragma endregion
 
@@ -204,26 +209,16 @@ int main()
         //inputs
         processInput(window);
 
-
         //processing
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); //RGB values to change colour
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//******* changes
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glBindTexture(GL_TEXTURE_2D, texture1);
 
-        //=============================================
-        //cube 
+        // cube
         glm::mat4 model = glm::mat4(1.0f);
-        //model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        //model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-        //model = glm::translate(model, glm::vec3(0.0f, 0.0f, 1.0f));
-
-        glm::mat4 view = glm::mat4(1.0f);
-        // note that we're translating the scene in the reverse direction of where we want to move
-        view = camera.getViewMatrix();
-
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+        glm::mat4 view = camera.getViewMatrix();
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
         unsigned int viewLoc = glGetUniformLocation(myShader.ID, "view");
 
@@ -234,16 +229,8 @@ int main()
         myCube.Draw(myShader);
         myCubeSequel.Draw(myShader);
 
-
-
-        //math
-
-        //frame buffers
-
         glfwSwapBuffers(window);
         glfwPollEvents();
-
-        glfwSetKeyCallback(window, key_callback);
     }
 
     glfwTerminate();
@@ -261,7 +248,43 @@ void processInput(GLFWwindow* window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    
 
-    //all input managing things
+    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS)
+        camera.toggleFreeLook();  // Toggle free look when the TAB key is pressed
+
+    if (camera.isFreeLook()) {
+        camera.processInput(window);  // Process free look camera input
+    }
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    camera.processKeyboardInput(key, action);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
+    lastX = xpos;
+    lastY = ypos;
+
+    if (camera.isFreeLook())
+        camera.processMouseMovement(xoffset, yoffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    if (camera.isFreeLook())
+        camera.processMouseScroll(yoffset);
 }
