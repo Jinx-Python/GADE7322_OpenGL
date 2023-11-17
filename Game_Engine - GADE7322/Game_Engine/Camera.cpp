@@ -7,10 +7,12 @@ Camera::Camera() {
     cameraPositions[2] = glm::vec3(3.0f, 0.0f, 0.0f);   //position 3
     currentCameraPositionIndex = 0;
     viewMatrix = glm::lookAt(cameraPositions[currentCameraPositionIndex], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);  // Initial position of the free look camera
+    cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);  //Initial position of the free look camera
     cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
     freeLook = false;
+    pitch = 0.0f;  //Added initialization
+    yaw = -90.0f;  //Added initialization
     cameraSpeed = 2.5f;       
     sensitivity = 0.1f;       
 }
@@ -19,7 +21,7 @@ void Camera::processInput(GLFWwindow* window, int key, int action) {
     if (key == GLFW_KEY_TAB && action == GLFW_PRESS) {
         freeLook = !freeLook;
         if (!freeLook) {
-            // If we are transitioning from free look to static position, reset the view matrix
+            //If we are transitioning from free look to static position, reset the view matrix
             viewMatrix = glm::lookAt(cameraPositions[currentCameraPositionIndex], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
     }
@@ -53,7 +55,7 @@ void Camera::processFreeLookInput(GLFWwindow* window, int key, int action) {
         viewMatrix = glm::lookAt(cameraPositions[currentCameraPositionIndex], glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
-    // Update view matrix
+    //Update view matrix
     viewMatrix = glm::lookAt(cameraPosition, cameraPosition + cameraFront, cameraUp);
 }
 
@@ -62,7 +64,7 @@ glm::mat4 Camera::getViewMatrix() {
 }
 
 void Camera::updateFreeLookCameraVectors() {
-    // Update the camera's front vector based on mouse movement
+    //Update the camera's front vector based on mouse movement
     glm::vec3 front;
     front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     front.y = sin(glm::radians(pitch));
@@ -75,7 +77,7 @@ void Camera::processMouseMovement(GLFWwindow* window, double xpos, double ypos) 
     static double lastY = ypos;
 
     double xoffset = xpos - lastX;
-    double yoffset = lastY - ypos;  // Reversed since y-coordinates range from bottom to top
+    double yoffset = lastY - ypos;  //Reversed since y-coordinates range from bottom to top
     lastX = xpos;
     lastY = ypos;
 
@@ -85,7 +87,7 @@ void Camera::processMouseMovement(GLFWwindow* window, double xpos, double ypos) 
     yaw += xoffset;
     pitch += yoffset;
 
-    // Constrain pitch to avoid camera flipping
+    //Constrain pitch to avoid camera flipping
     if (pitch > 89.0f) {
         pitch = 89.0f;
     }
